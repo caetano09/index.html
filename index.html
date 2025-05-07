@@ -6,26 +6,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <?php
-    $horas_possiveis = ['10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00'];
-    $horas_ocupadas = [];
-    $data_escolhida = isset($_GET['data']) ? $_GET['data'] : "";
-
-    if (!empty($data_escolhida)) {
-        $db = new PDO("sqlite:base_dados.sqlite");
-        $stmt = $db->prepare("SELECT hora FROM marcacoes WHERE data = :data");
-        $stmt->bindParam(':data', $data_escolhida);
-        $stmt->execute();
-        $horas_ocupadas = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-    ?>
     <div class="container">
         <h1>CaetanoBarberShop</h1>
         <h2>Agendar Corte</h2>
         <form action="guardar.php" method="post">
             <label>Nome:<br>
                 <input type="text" name="nome" required>
-            </label><br><br>
+            </label>
+            <br><br>
 
             <label>Serviço:<br>
                 <select name="servico" required>
@@ -34,29 +22,32 @@
                     <option value="Barba">Barba</option>
                     <option value="Lavagem de cabelo">Lavagem de cabelo</option>
                 </select>
-            </label><br><br>
+            </label>
+            <br><br>
 
             <label>Data:<br>
-                <input type="date" name="data" required onchange="this.form.submit()" value="<?= htmlspecialchars($data_escolhida) ?>">
-            </label><br><br>
+                <input type="date" name="data" required>
+            </label>
+            <br><br>
 
             <label>Hora:<br>
                 <select name="hora" required>
-                <?php foreach ($horas_possiveis as $hora): ?>
-                    <?php if (in_array($hora, $horas_ocupadas)): ?>
-                        <option value="<?= $hora ?>" disabled style="text-decoration: line-through; color: #888;">
-                            <?= $hora ?> (Ocupado)
-                        </option>
-                    <?php else: ?>
-                        <option value="<?= $hora ?>"><?= $hora ?></option>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
                 </select>
-            </label><br><br>
+            </label>                
+            <br><br>
 
             <label>Contacto:<br>
                 <input type="text" name="contacto" required>
-            </label><br><br>
+            </label>
+            <br><br>
 
             <button type="submit">Agendar</button>
         </form>
